@@ -25,6 +25,13 @@ public class GlobalExceptionHandler {
 				.body(new ApiErrorResponse("VALIDATION_ERROR", "Los datos enviados no son válidos", request.getRequestURI()));
 	}
 
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<ApiErrorResponse> handleIllegalArgument(IllegalArgumentException exception, HttpServletRequest request) {
+		// Comentario explicativo: Captura los IllegalArgumentException para responder con HttpStatus.BAD_REQUEST en validaciones
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+				.body(new ApiErrorResponse("BAD_REQUEST", exception.getMessage(), request.getRequestURI()));
+	}
+
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ApiErrorResponse> handleGeneric(Exception exception, HttpServletRequest request) {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
