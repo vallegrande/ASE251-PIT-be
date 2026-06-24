@@ -51,4 +51,12 @@ public class UsuarioService extends AbstractCrudService<Usuario> {
 
 		return super.update(id, incoming);
 	}
+
+	// Comentario explicativo: Servicio de búsqueda que invoca al repositorio para filtrar usuarios activos por el término dado
+	public java.util.List<Usuario> search(String query) {
+		if (query == null || query.trim().isEmpty()) {
+			return findAll();
+		}
+		return usuarioRepository.searchActiveUsers(query.trim());
+	}
 }

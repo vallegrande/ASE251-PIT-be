@@ -30,4 +30,11 @@ public class UsuarioController extends AbstractCrudController<Usuario> {
 	public List<Usuario> findAllDeleted() {
 		return service.findAllDeleted();
 	}
+
+	@GetMapping("/buscar")
+	@Operation(summary = "Busca usuarios activos por coincidencia en nombre, apellido o documento")
+	public List<Usuario> search(@org.springframework.web.bind.annotation.RequestParam(required = false) String query) {
+		// Comentario explicativo: Expone el endpoint de búsqueda llamando a service.search con el parámetro query recibido
+		return service.search(query);
+	}
 }
