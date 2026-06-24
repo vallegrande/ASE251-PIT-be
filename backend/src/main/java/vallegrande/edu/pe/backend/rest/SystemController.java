@@ -2,8 +2,10 @@ package vallegrande.edu.pe.backend.rest;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.SQLException;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,6 +17,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import vallegrande.edu.pe.backend.rest.dto.ConnectionStatusResponse;
+import vallegrande.edu.pe.backend.rest.dto.SystemInfoResponse;
 
 @RestController
 @RequestMapping("/api/v1/system")
@@ -23,6 +26,23 @@ import vallegrande.edu.pe.backend.rest.dto.ConnectionStatusResponse;
 public class SystemController {
 
 	private final JdbcTemplate jdbcTemplate;
+
+	@Value("${spring.application.name:backend}")
+	private String applicationName;
+
+	@Value("${app.version:0.0.1}")
+	private String applicationVersion;
+
+	@GetMapping("/info")
+	@Operation(summary = "Obtiene información general del sistema")
+	public SystemInfoResponse getSystemInfo() {
+		ZoneId zoneId = ZoneId.systemDefault();
+		return new SystemInfoResponse(
+				applicationName,
+				applicationVersion,
+				zoneId.getId(),
+				OffsetDateTime.now(zoneId).toString());
+	}
 
 	@GetMapping("/db-connection")
 	@Operation(summary = "Verifica la conexión con SQL Server")
