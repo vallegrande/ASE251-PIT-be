@@ -1,8 +1,12 @@
 package vallegrande.edu.pe.backend.rest;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import vallegrande.edu.pe.backend.model.Insumo;
@@ -19,5 +23,11 @@ public class InsumoController extends AbstractCrudController<Insumo> {
 	@Override
 	protected AbstractCrudService<Insumo> service() {
 		return service;
+	}
+
+	@GetMapping("/eliminados")
+	@Operation(summary = "Lista todos los insumos eliminados lógicamente")
+	public List<Insumo> findAllDeleted() {
+		return service.findAllDeleted();
 	}
 }

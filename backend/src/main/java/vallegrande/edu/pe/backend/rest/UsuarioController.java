@@ -1,8 +1,12 @@
 package vallegrande.edu.pe.backend.rest;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import vallegrande.edu.pe.backend.model.Usuario;
@@ -19,5 +23,11 @@ public class UsuarioController extends AbstractCrudController<Usuario> {
 	@Override
 	protected AbstractCrudService<Usuario> service() {
 		return service;
+	}
+
+	@GetMapping("/eliminados")
+	@Operation(summary = "Lista todos los usuarios eliminados lógicamente")
+	public List<Usuario> findAllDeleted() {
+		return service.findAllDeleted();
 	}
 }

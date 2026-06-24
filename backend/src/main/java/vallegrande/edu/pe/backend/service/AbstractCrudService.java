@@ -27,6 +27,13 @@ public abstract class AbstractCrudService<T extends AuditableEntity & CrudEntity
 	}
 
 	@Transactional(readOnly = true)
+	public List<T> findAllDeleted() {
+		return repository.findAll().stream()
+				.filter(entity -> !Boolean.TRUE.equals(entity.getEstado()) || entity.getDeletedAt() != null)
+				.toList();
+	}
+
+	@Transactional(readOnly = true)
 	public T findById(Long id) {
 		return repository.findById(id)
 				.filter(entity -> Boolean.TRUE.equals(entity.getEstado()) && entity.getDeletedAt() == null)

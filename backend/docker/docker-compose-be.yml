@@ -9,9 +9,9 @@ services:
       SPRING_DATASOURCE_URL: "jdbc:sqlserver://db:1433;databaseName=dbsiste;encrypt=true;trustServerCertificate=true"
       SPRING_DATASOURCE_USERNAME: sa
       SPRING_DATASOURCE_PASSWORD: "${MSSQL_SA_PASSWORD:-Diego1416}"
-      SERVER_PORT: "8080"
+      SERVER_PORT: "9090"
     ports:
-      - "8080:8080"
+      - "9090:9090"
     restart: unless-stopped
     networks:
       - pit-net
