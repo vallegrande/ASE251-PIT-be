@@ -9,6 +9,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.springframework.stereotype.Service;
 
 import vallegrande.edu.pe.backend.model.Reporte;
@@ -28,13 +29,13 @@ public class ReporteService extends AbstractCrudService<Reporte> {
 
 			try (PDPageContentStream content = new PDPageContentStream(document, page)) {
 				content.beginText();
-				content.setFont(PDType1Font.HELVETICA_BOLD, 18);
+				content.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 18);
 				content.newLineAtOffset(50, 720);
 				content.showText("Reporte de registros");
 				content.endText();
 
 				content.beginText();
-				content.setFont(PDType1Font.HELVETICA, 12);
+				content.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 12);
 				content.newLineAtOffset(50, 690);
 
 				if (reportes.isEmpty()) {
