@@ -18,6 +18,7 @@ BEGIN
 		tipo_documento NVARCHAR(30) NOT NULL,
 		numero_documento NVARCHAR(30) NOT NULL,
 		direccion NVARCHAR(250) NULL,
+		password NVARCHAR(255) NOT NULL DEFAULT '123456',
 		estado BIT NOT NULL CONSTRAINT df_usuarios_estado DEFAULT (1),
 		created_at DATETIME2(0) NOT NULL CONSTRAINT df_usuarios_created_at DEFAULT (SYSDATETIME()),
 		updated_at DATETIME2(0) NULL,
