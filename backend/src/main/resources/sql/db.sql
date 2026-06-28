@@ -167,3 +167,78 @@ BEGIN
 	);
 END
 GO
+
+
+IF OBJECT_ID(N'dbo.riegos', N'U') IS NULL
+BEGIN
+	CREATE TABLE dbo.riegos (
+		id_riego INT IDENTITY(1,1) NOT NULL,
+		id_parcela INT NOT NULL,
+		fecha_riego DATETIME2(0) NOT NULL,
+		tipo_riego NVARCHAR(50) NOT NULL, -- 'manual', 'aspersion', 'goteo', 'inundacion'
+		duracion_minutos INT NOT NULL DEFAULT 0,
+		cantidad_agua DECIMAL(10,2) NULL, -- litros o m3
+		responsable NVARCHAR(100) NULL,
+		observaciones NVARCHAR(500) NULL,
+		estado BIT NOT NULL CONSTRAINT df_riegos_estado DEFAULT (1),
+		created_at DATETIME2(0) NOT NULL CONSTRAINT df_riegos_created_at DEFAULT (SYSDATETIME()),
+		updated_at DATETIME2(0) NULL,
+		deleted_at DATETIME2(0) NULL,
+		restored_at DATETIME2(0) NULL,
+		CONSTRAINT pk_riegos PRIMARY KEY (id_riego),
+		CONSTRAINT fk_riegos_parcela FOREIGN KEY (id_parcela) REFERENCES dbo.parcelas (id_parcela),
+		CONSTRAINT ck_riegos_tipo CHECK (tipo_riego IN ('manual', 'aspersion', 'goteo', 'inundacion'))
+	);
+END
+GO
+
+
+IF OBJECT_ID(N'dbo.cosechas', N'U') IS NULL
+BEGIN
+	CREATE TABLE dbo.cosechas (
+		id_cosecha INT IDENTITY(1,1) NOT NULL,
+		id_parcela INT NOT NULL,
+		id_cultivo INT NOT NULL,
+		fecha_cosecha DATETIME2(0) NOT NULL,
+		cantidad DECIMAL(12,3) NOT NULL, -- kg o toneladas
+		unidad_medida NVARCHAR(20) NOT NULL, -- 'kg', 't', 'unidades'
+		calidad NVARCHAR(50) NOT NULL, -- 'excelente', 'buena', 'regular', 'mala'
+		precio_venta DECIMAL(10,2) NULL, -- precio por unidad/kg
+		ingreso_total DECIMAL(12,2) NULL, -- cantidad * precio_venta
+		observaciones NVARCHAR(500) NULL,
+		estado BIT NOT NULL CONSTRAINT df_cosechas_estado DEFAULT (1),
+		created_at DATETIME2(0) NOT NULL CONSTRAINT df_cosechas_created_at DEFAULT (SYSDATETIME()),
+		updated_at DATETIME2(0) NULL,
+		deleted_at DATETIME2(0) NULL,
+		restored_at DATETIME2(0) NULL,
+		CONSTRAINT pk_cosechas PRIMARY KEY (id_cosecha),
+		CONSTRAINT fk_cosechas_parcela FOREIGN KEY (id_parcela) REFERENCES dbo.parcelas (id_parcela),
+		CONSTRAINT fk_cosechas_cultivo FOREIGN KEY (id_cultivo) REFERENCES dbo.cultivos (id_cultivo),
+		CONSTRAINT ck_cosechas_calidad CHECK (calidad IN ('excelente', 'buena', 'regular', 'mala')),
+		CONSTRAINT ck_cosechas_unidad CHECK (unidad_medida IN ('kg', 't', 'unidades'))
+	);
+END
+GO
+
+
+IF OBJECT_ID(N'dbo.programacion_riegos', N'U') IS NULL
+BEGIN
+	CREATE TABLE dbo.programacion_riegos (
+		id_programacion INT IDENTITY(1,1) NOT NULL,
+		id_parcela INT NOT NULL,
+		fecha_programada DATETIME2(0) NOT NULL,
+		frecuencia NVARCHAR(30) NOT NULL, -- 'diario', 'semanal', 'quincenal', 'mensual'
+		tipo_riego NVARCHAR(50) NOT NULL,
+		duracion_estimada INT NOT NULL DEFAULT 0,
+		activo BIT NOT NULL CONSTRAINT df_programacion_activo DEFAULT (1),
+		observaciones NVARCHAR(500) NULL,
+		estado BIT NOT NULL CONSTRAINT df_programacion_estado DEFAULT (1),
+		created_at DATETIME2(0) NOT NULL CONSTRAINT df_programacion_created_at DEFAULT (SYSDATETIME()),
+		updated_at DATETIME2(0) NULL,
+		deleted_at DATETIME2(0) NULL,
+		restored_at DATETIME2(0) NULL,
+		CONSTRAINT pk_programacion_riegos PRIMARY KEY (id_programacion),
+		CONSTRAINT fk_programacion_parcela FOREIGN KEY (id_parcela) REFERENCES dbo.parcelas (id_parcela)
+	);
+END
+GO
