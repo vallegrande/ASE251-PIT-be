@@ -12,6 +12,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	// Comentario explicativo: Busca un usuario activo o inactivo por su correo electrónico
 	Optional<Usuario> findByEmail(String email);
 
+	// Comentario explicativo: Busca un usuario por su correo y contraseña
+	Optional<Usuario> findByEmailAndPassword(String email, String password);
+
 	// Comentario explicativo: Busca un usuario activo o inactivo por su número de documento
 	Optional<Usuario> findByNumeroDocumento(String numeroDocumento);
 

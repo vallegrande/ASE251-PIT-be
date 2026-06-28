@@ -59,4 +59,10 @@ public class UsuarioService extends AbstractCrudService<Usuario> {
 		}
 		return usuarioRepository.searchActiveUsers(query.trim());
 	}
+
+	// Comentario explicativo: Servicio para autenticar un usuario por correo y contraseña
+	public Usuario login(String email, String password) {
+		return usuarioRepository.findByEmailAndPassword(email, password)
+				.orElseThrow(() -> new IllegalArgumentException("Credenciales inválidas"));
+	}
 }

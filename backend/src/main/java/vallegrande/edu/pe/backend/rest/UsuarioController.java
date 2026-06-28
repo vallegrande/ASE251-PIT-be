@@ -37,4 +37,10 @@ public class UsuarioController extends AbstractCrudController<Usuario> {
 		// Comentario explicativo: Expone el endpoint de búsqueda llamando a service.search con el parámetro query recibido
 		return service.search(query);
 	}
+
+	@org.springframework.web.bind.annotation.PostMapping("/login")
+	@Operation(summary = "Autentica un usuario por email y contraseña")
+	public Usuario login(@org.springframework.web.bind.annotation.RequestBody vallegrande.edu.pe.backend.rest.dto.LoginRequest dto) {
+		return service.login(dto.getEmail(), dto.getPassword());
+	}
 }
